@@ -85,16 +85,42 @@ class Network(object):
 		self.weights = [w-(eta/len(mini_batch))*nw for w, nw in zip(self.weights, nabla_w)]
 		self.biases = [b-(eta/len(mini_batch))*nb for b, nb in zip(self.weights, nabla_b)]
 
+	def backprop(self, x, y):
+		"""
+		Returns a tuple (nabla_b, nabla_w) representing the gradient for cost function C_x
+		ie for a single training input, atm. 
 
+		nabla_b and nabla_w are layer by layer lists of numpy arrays, similar to the self.biases, 
+		and self.weights
 
+		"""
+		pass
 
+	def evaluate(self, test_data):
+		"""
+		Returns the number of test inputs for which the neural network outputs the correct result. 
+		For newbs, note that the neural network's output is assumed to be the index of whichever
+		neuron in the final layer has the highest activation. 
+		"""
+		test_results = [(np.argmax(self.feedforward(x)), y) for x,y in test_data] # note how np.argmax returns the index of the highest value in the list
+		return sum(int(x==y) for x,y in test_results)
 
-
-
-
+	def cost_derivative(self, output_activations, y):
+		"""
+		Returns the vector of partial derivatives dC_x / da for the output activations
+		"""
+		return (output_actications-y)
 
 
 # Static Functions
 def sigmoid(z):
+	"""
+	Returns the sigmoid of z
+	"""
 	return (1.0/(1.0+np.exp(-z)))
 
+def sigmoid_prime(z):
+	"""
+	Returns the value of derivative of sigmoid at z
+	"""
+	return sigmoid(z) * (1-sigmoid(z))
