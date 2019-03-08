@@ -3,19 +3,17 @@ Module contains definitions for a general feed forward neural network which is t
 with a simple backpropagation algorithm with neurons that have a sigmoid activation function.
 """
 
-
 import random
 import numpy as np
 
 
 class Network(object):
     """
-    General Network Class which defines a fully connected feed forward NN (saka: MLP)
+    General Network Class which defines a fully connected feed forward NN (aka: MLP)
 
     Usage: net = Network(sizes = [2,3,1]) creates a 3 layer nn consisting of a 2 neuron
             input layer
     """
-
     def __init__(self, sizes):
         self.num_layers = len(sizes)
         self.sizes = sizes
