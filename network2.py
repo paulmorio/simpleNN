@@ -190,8 +190,38 @@ class Network(object):
         numpy arrays similar to self.biases and self.weight
         """
 
-        pass
+        nabla_b = [np.zeros(b.shape) for b in self.biases]
+        nabla_w = [np.zeros(w.shape) for w in self.weights]
 
+        ################
+        # Forward Pass #
+        ################
+        activation = x
+        activations = [x] # list to store activations layer by layer
+        zs = [] # list to store weighted input
+
+        # compute the weighted inputs and activations for each layer
+        for b, w in zip(self.biases, self.weights):
+            z = np.dot(w, activation) + b
+            zs.append(z)
+            activation = sigmoid(z)
+            activations.append(activation)
+
+        #################
+        # Backward Pass #
+        #################
+        delta = (self.cost).delta(zs[-1], activations[-1], y)                    # BP 1
+        nabla_b[-1] = delta                                                      # BP 3
+        nabla_w[-1] = np.dot(delta, activations[-2].transpose())                 # BP 4
+
+        for l in range(2, self.num_layers):
+            z = zs[-l]
+            sp = sigmoid_prime(z)
+            delta = np.dot(self.weights[-l+1].transpose(), delta) * sp # BP 2
+            nabla_b[-l] = delta
+            nabla_w[-l] = np.dot(delta, activations[-l-1].transpose())
+
+        return (nabla_b, nabla_w)
 
 # Static Functions
 ##################
