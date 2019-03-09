@@ -223,13 +223,54 @@ class Network(object):
 
         return (nabla_b, nabla_w)
 
+    def accuracy(self, data, convert=False):
+        if convert:
+            results = [(np.argmax(self.feedforward(x)), np.argmax(y))
+                       for (x, y) in data]
+        else:
+            results = [(np.argmax(self.feedforward(x)), y)
+                        for (x, y) in data]
+        return sum(int(x == y) for (x, y) in results)
+
+    def total_cost(self, data, lmbda, convert=False):
+        """Return the total cost for the data set ``data``.  The flag
+        ``convert`` should be set to False if the data set is the
+        training data (the usual case), and to True if the data set is
+        the validation or test data.  See comments on the similar (but
+        reversed) convention for the ``accuracy`` method, above.
+        """
+        cost = 0.0
+        for x, y in data:
+            a = self.feedforward(x)
+            if convert: y = vectorized_result(y)
+            cost += self.cost.fn(a, y)/len(data)
+        cost += 0.5*(lmbda/len(data))*sum(
+            np.linalg.norm(w)**2 for w in self.weights)
+        return cost
+
+    def save(self, filename):
+        """Save the neural network to the file ``filename``."""
+        data = {"sizes": self.sizes,
+                "weights": [w.tolist() for w in self.weights],
+                "biases": [b.tolist() for b in self.biases],
+                "cost": str(self.cost.__name__)}
+        f = open(filename, "w")
+        json.dump(data, f)
+        f.close()
 # Static Functions
 ##################
 def load(filename):
     """
     Loads a neural network from the file, filename. Returns an instance of Network
     """
-    pass
+    f = open(filename, "r")
+    data = json.load(f)
+    f.close()
+    cost = getattr(sys.modules[__name__], data["cost"])
+    net = Network(data["sizes"], cost=cost)
+    net.weights = [np.array(w) for w in data["weights"]]
+    net.biases = [np.array(b) for b in data["biases"]]
+    return net
 
 def vectorized_result(j):
     """
