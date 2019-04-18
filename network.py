@@ -1,4 +1,6 @@
 """
+Code by Michael Nielsen
+Adapted/Commented by paulmorio
 Module contains definitions for a general feed forward neural network which is trained by stochastic gradient descent,
 with a simple backpropagation algorithm with neurons that have a sigmoid activation function.
 """
