@@ -55,23 +55,13 @@ optimizer = optim.SGD(net.parameters(), lr=0.001)
 # Train the network
 for epoch in range(100):
 	running_loss = 0.0
-	for x,y in torch_training_data:
+	for x,y in torch_training_data: # essentially online learning
 		optimizer.zero_grad()
 
 		# forward pass
 		outputs = net(x)
 
 		# backward pass
-		# print("\noutput shape:")
-		# print (outputs.shape)
-		# print (outputs.dtype)
-		# print("output is: {0}".format(outputs))
-
-		# print("\ny shape:")
-		# print(y.shape)
-		# print(y.dtype)
-		# print("ground truth is: {0}".format(y))
-
 		loss = criterion(outputs, y)
 		loss.backward()
 		optimizer.step()
@@ -90,7 +80,7 @@ with torch.no_grad():
 	for x,y in torch_test_data:
 		outputs = net(x)
 		maxvalue, predicted_index = torch.max(outputs.data, 0)
-		totals += 1
+		total += 1
 		if predicted_index == y:
 			correct += 1
 
