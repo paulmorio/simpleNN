@@ -7,7 +7,13 @@ structures that are returned, see the doc strings for ``load_data``
 and ``load_data_wrapper``.  In practice, ``load_data_wrapper`` is the
 function usually called by our neural network code.
 
+This Loader has been adapted to work on python 3 as there are some
+interesting (confusing) changes the way encoding works in pickle, and the
+lack of cPickle (cause its built in) in python 3. Similarly python 3 likes
+iterators a lot more so zips return 'zip' iterators instead of lists.
+
 Author: Michael Nielsen 2016
+Adapted by: Paul Scherer 2019
 """
 
 #### Libraries

@@ -20,12 +20,9 @@ optimized for speed applies.
 
 # Library imports
 ##################
-# Standard
 import json
 import random
 import sys
-
-# 3rd Party
 import numpy as np
 
 ##################
@@ -36,7 +33,6 @@ class QuadraticCost(object):
     Class which implements the quadratic cost for neural networks
     via static methods
     """
-
     @staticmethod
     def fn(a,y):
         """Return the cost associated with input 'a' and true label 'y'"""
@@ -72,13 +68,11 @@ class Network(object):
     Usage: net = Network(sizes = [2,3,1]) creates a 3 layer NN consisting
     of a 2 neuron input layer, a 3 neuron hidden layer and a 1 neuron output
     """
-     
     def __init__(self, sizes, cost=CrossEntropyCost):
         """
         NB: The biases and weights for the network are initialized randomly
         self.default_weight_initializer()
         """
-
         self.num_layers = len(sizes)
         self.sizes = sizes
         self.default_weight_initializer()
@@ -90,7 +84,6 @@ class Network(object):
         over the square root of the number of the weights connecting
         to the same neuron. This initialization helps the network learn
         faster. The more naive weight initializer is described in large weight initializer
-
         """
         self.biases = [np.random.randn(y,1) for y in self.sizes[1:]]
         self.weights = [np.random.randn(y,x)/np.sqrt(x) for x,y in zip(self.sizes[:-1], self.sizes[1:])]
@@ -100,7 +93,6 @@ class Network(object):
         Initialise the weights using a Gaussian distribution with mean 0
         and standard deviation of 1. Initializes the biases using a G(0,1)
         """
-
         self.biases = [np.random.randn(y,1) for y in self.sizes[1:]]
         self.weights = [np.random.randn(y,x) for x,y in zip(self.sizes[:-1], self.sizes[1:])]
 

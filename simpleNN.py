@@ -15,7 +15,6 @@ class Network(object):
 
     Usage: net = Network(sizes = [2,3,1]) creates a 3 layer NN consisting
     of a 2 neuron input layer, a 3 neuron hidden layer and a 1 neuron output
-
     """
     def __init__(self, sizes):
         self.num_layers = len(sizes)
