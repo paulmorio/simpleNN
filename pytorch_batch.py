@@ -21,17 +21,14 @@ import torch.optim as optim
 import mnist_loader_python3
 training_data, _, test_data = mnist_loader_python3.load_data_wrapper()
 
-# Have to change our data set into Pytorch tensors to work.
-# torch_training_data = []
-# for i in range(len(training_data)):
-# 	x, y = training_data[i]
-# 	torch_training_data.append((torch.from_numpy(x),(torch.from_numpy(y)).view(10)))
-
+# Not Necessary but for continuity of previous pytorch version and example
 torch_test_data = []
 for i in range(len(test_data)):
 	x, y = test_data[i]
 	torch_test_data.append((torch.from_numpy(x), torch.as_tensor(y)))
 
+##
+## Focus point of this module, examine the sizes in the interactive python interpreter
 def create_mini_batches(training_data, batch_size):
 	"""
 	Small helper function to create mini-batched training data set
@@ -62,10 +59,11 @@ class SimpleNet(nn.Module):
 		x = self.fc2(x)
 		return x
 
-# Define the Loss and Optimizer
+# Instantiate Network and define the loss and optimizer for this network
 net = SimpleNet()
 criterion = nn.MSELoss()
 optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
+batch_size = 100
 
 ##################################
 ###### Training the Network ######
@@ -73,7 +71,7 @@ optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 for epoch in range(100):
 	running_loss = 0.0
 	random.shuffle(training_data)
-	torch_training_data = create_mini_batches(training_data, 1)
+	torch_training_data = create_mini_batches(training_data, batch_size)
 	for x_batch, y_batch in torch_training_data:
 		optimizer.zero_grad()
 

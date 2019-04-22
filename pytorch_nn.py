@@ -46,7 +46,7 @@ class SimpleNet(nn.Module):
 		x = self.fc2(x)
 		return x
 
-# Define the Loss and Optimizer
+# Instantiate Network and define the loss and optimizer for this network
 net = SimpleNet()
 criterion = nn.MSELoss()
 optimizer = optim.SGD(net.parameters(), lr=0.0001)
