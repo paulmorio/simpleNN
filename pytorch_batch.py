@@ -61,29 +61,31 @@ class SimpleNet(nn.Module):
 
 # Instantiate Network and define the loss and optimizer for this network
 net = SimpleNet()
-criterion = nn.MSELoss()
+criterion = nn.MSELoss(reduction="mean")
 optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 batch_size = 100
 
 ##################################
 ###### Training the Network ######
 ##################################
-for epoch in range(100):
+for epoch in range(1000):
 	running_loss = 0.0
 	random.shuffle(training_data)
 	torch_training_data = create_mini_batches(training_data, batch_size)
 	for x_batch, y_batch in torch_training_data:
-		optimizer.zero_grad()
-
 		# forward pass
 		outputs = net(x_batch)
 
 		# backward pass
 		loss = criterion(outputs, y_batch)
+		optimizer.zero_grad()
 		loss.backward()
+
+		# Update weights
 		optimizer.step()
 
 		running_loss += loss.item()
+
 	if epoch % 2 == 0:
 		print('[%d] Loss: %.3f' % (epoch, running_loss))
 
@@ -96,11 +98,11 @@ correct = 0
 total = 0
 with torch.no_grad():
 	for x,y in torch_test_data:
-		x = x.view(784) # single input
-		outputs = net(x)
-		maxvalue, predicted_index = torch.max(outputs.data, 0)
-		total += 1
+		x = (x.flatten().unsqueeze(0))
+		y_pred = net(x)
+		max_value, predicted_index = torch.max(y_pred.data, 1)
+
+		total+=1
 		if predicted_index == y:
 			correct += 1
-
 print('Accuracy of the network on the 10000 test images: %d %%' % (100 * correct / total))

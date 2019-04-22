@@ -41,7 +41,7 @@ class SimpleNet(nn.Module):
 		self.fc2 = nn.Linear(64, 10)
 
 	def forward(self,x):
-		x = x.view(784)
+		x = x.flatten() # cause at the moment x is [784,1] we want [784]
 		x = F.sigmoid(self.fc1(x))
 		x = self.fc2(x)
 		return x
@@ -49,7 +49,7 @@ class SimpleNet(nn.Module):
 # Instantiate Network and define the loss and optimizer for this network
 net = SimpleNet()
 criterion = nn.MSELoss()
-optimizer = optim.SGD(net.parameters(), lr=0.0001)
+optimizer = optim.SGD(net.parameters(), lr=0.001)
 
 ##################################
 ###### Training the Network ######
