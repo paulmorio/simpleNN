@@ -22,16 +22,33 @@ import mnist_loader_python3
 training_data, _, test_data = mnist_loader_python3.load_data_wrapper()
 
 # Have to change our data set into Pytorch tensors to work.
-torch_training_data = []
-torch_test_data = []
-for i in range(len(training_data)):
-	x, y = training_data[i]
-	torch_training_data.append((torch.from_numpy(x),(torch.from_numpy(y)).view(10)))
+# torch_training_data = []
+# for i in range(len(training_data)):
+# 	x, y = training_data[i]
+# 	torch_training_data.append((torch.from_numpy(x),(torch.from_numpy(y)).view(10)))
 
+torch_test_data = []
 for i in range(len(test_data)):
 	x, y = test_data[i]
 	torch_test_data.append((torch.from_numpy(x), torch.as_tensor(y)))
 
+def create_mini_batches(training_data, batch_size):
+	"""
+	Small helper function to create mini-batched training data set
+	for mini-batch stochastic gradient descent
+	"""
+	batches = [training_data[k:k+batch_size] for k in range(0,len(training_data),batch_size)]
+	torch_compliant_batches = [] # torch likes batches to be in the shape tensor[num, (dimsIN)]
+	for mini_batch in batches:
+		mini_batch_obs = []
+		mini_batch_labels = []
+		for obs in mini_batch:
+			x,y = obs
+			mini_batch_obs.append(x.flatten())
+			mini_batch_labels.append(y.flatten())
+		torch_compliant_batches.append((torch.from_numpy(np.array(mini_batch_obs)), torch.from_numpy(np.array(mini_batch_labels))))
+
+	return torch_compliant_batches
 
 # Architecture definition
 class SimpleNet(nn.Module):
@@ -41,7 +58,6 @@ class SimpleNet(nn.Module):
 		self.fc2 = nn.Linear(64, 10)
 
 	def forward(self,x):
-		x = x.view(784)
 		x = F.sigmoid(self.fc1(x))
 		x = self.fc2(x)
 		return x
@@ -49,21 +65,23 @@ class SimpleNet(nn.Module):
 # Define the Loss and Optimizer
 net = SimpleNet()
 criterion = nn.MSELoss()
-optimizer = optim.SGD(net.parameters(), lr=0.0001)
+optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
 
 ##################################
 ###### Training the Network ######
 ##################################
 for epoch in range(100):
 	running_loss = 0.0
-	for x,y in torch_training_data: # essentially online learning
+	random.shuffle(training_data)
+	torch_training_data = create_mini_batches(training_data, 1)
+	for x_batch, y_batch in torch_training_data:
 		optimizer.zero_grad()
 
 		# forward pass
-		outputs = net(x)
+		outputs = net(x_batch)
 
 		# backward pass
-		loss = criterion(outputs, y)
+		loss = criterion(outputs, y_batch)
 		loss.backward()
 		optimizer.step()
 
@@ -80,6 +98,7 @@ correct = 0
 total = 0
 with torch.no_grad():
 	for x,y in torch_test_data:
+		x = x.view(784) # single input
 		outputs = net(x)
 		maxvalue, predicted_index = torch.max(outputs.data, 0)
 		total += 1

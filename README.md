@@ -17,7 +17,7 @@ Reviewing Key Concepts and Preparing materials to teach in Class.
 
 ### Bonus
 - PYTORCH Vanilla Feed Forward MLP (with stochastic gradient descent, sigmoid activation layers, quadratic cost function) found in `pytorch_nn` (for online learning)
-	- `pytorch_batch_nn` is identical to pytorch_nn, but includes batch learning for batch stochastic gradient descent 
+	- `pytorch_batch` is identical to pytorch_nn, but includes batch learning for batch stochastic gradient descent 
 
 #### TODO
 - TENSORFLOW Vanilla Feed Forward MLP (with stochastic gradient descent, sigmoid activation layers, quardratic cost function) found in `tensorflow_nn`)
