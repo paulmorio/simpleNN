@@ -68,7 +68,7 @@ batch_size = 100
 ##################################
 ###### Training the Network ######
 ##################################
-for epoch in range(1000):
+for epoch in range(500):
 	running_loss = 0.0
 	random.shuffle(training_data)
 	torch_training_data = create_mini_batches(training_data, batch_size)
