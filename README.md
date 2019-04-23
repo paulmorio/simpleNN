@@ -16,9 +16,9 @@ Reviewing Key Concepts and Preparing materials to teach in Class.
 - Vanilla Feed Forward MLP (with stochasting gradient descent, sigmoid activation layers, cross entropy cost function, softmax output, L2 regularization) found in `simpleNN2_matrix`
 
 ### Bonus
-- PYTORCH Vanilla Feed Forward MLP (with stochastic gradient descent, sigmoid activation layers, quadratic cost function) found in `pytorch_nn` (for online learning)
+- PYTORCH Vanilla Feed Forward MLP (with stochastic gradient descent, sigmoid activation layers, cross entropy cost function) found in `pytorch_nn` (for online learning)
 	- `pytorch_batch` is identical to pytorch_nn, but includes batch learning for batch stochastic gradient descent 
-- TENSORFLOW Vanilla Feed Forward MLP (with stochastic gradient descent, sigmoid activation layers, quardratic cost function) found in `tensorflow_nn`)
+- TENSORFLOW Vanilla Feed Forward MLP (with stochastic gradient descent, sigmoid activation layers, cross entropy cost function) found in `tensorflow_nn`)
+- KERAS (w. Tensorflow) Vanilla Feed Forward MLP (with stochastic gradient descent, sigmoid activation layers, cross entropy cost function found in `keras_nn`)
 
 #### TODO
-- KERAS (w. Tensorflow) Vanilla Feed Forward MLP (with stochastic gradient descent, sigmoid activation layers, quadratic cost function found in `keras_nn`)
